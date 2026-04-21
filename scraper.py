@@ -30,11 +30,11 @@ def scrape_activities():
             else:
                 current_category = None
 
-            # ecery a is a bew attraction
+            # every <a> tag is a new attraction
             for attraction in tag.find_all("a"):
                 link = attraction.get("href", "")
                 name = attraction.get("title", "")
-                # there were some things under the wrong categorie - change it here:
+                # there were some things under the wrong category - change it here:
                 if ("Park" in name):
                     current_category == "Park"
                 if ("Museum" in name):
