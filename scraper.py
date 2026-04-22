@@ -36,14 +36,14 @@ def scrape_activities():
                 name = attraction.get("title", "")
                 # there were some things under the wrong category - change it here:
                 if ("Park" in name):
-                    current_category == "Park"
+                    current_category = "Park"
                 if ("Museum" in name):
-                    current_category == "Museum"
+                    current_category = "Museum"
                 # add to the dictionary: only include activities ( not random <a>'s)
                 if (name != ""):
                     activities_data.append({
                     "name": name,
-                    "catogory": current_category,
+                    "category": current_category,
                     "link": "https://en.wikipedia.org" + link
                 })
     return activities_data
