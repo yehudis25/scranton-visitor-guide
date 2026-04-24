@@ -1,13 +1,11 @@
 # program to insert, update, delete, and query the scraped activities into a sqlite dtbs
 
-from scraper import scrape_activities
 import sqlite3
-import pandas as pd
 
-""" create a dtbs with a table of activities to do in Scranton """
+""" create a dtbs for table of activities to do in Scranton """
 
-def create_database(dtbs_name="activities.db"):
-    conn = sqlite3.connect(dtbs_name)  # connecting to database
+def create_database():
+    conn = sqlite3.connect("activities.db")  # connecting to database
     cur = conn.cursor()
     # make the table:
     cur.execute("""
@@ -15,7 +13,7 @@ def create_database(dtbs_name="activities.db"):
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT,
             category TEXT,
-            link TEXT,
+            link TEXT UNIQUE,
             rating_sum INTEGER,
             rating_count INTEGER
         )
@@ -32,17 +30,19 @@ def create_database(dtbs_name="activities.db"):
         )
     """)
     conn.commit()
-    # scrape the activities and make them into a list of tuples (for sqlite)
-    activities = scrape_activities()
+    conn.close()
+
+"""insert all the activities into the dtbs"""
+def insert_all(activities):
+    conn = sqlite3.connect("activities.db")  # connecting to database
+    cur = conn.cursor()
     activity_tuples = []
     for activity in activities:
         activity_tuples.append((activity["name"], activity["category"], activity["link"]))
-    cur.execute("SELECT COUNT(*) FROM activities")
-    count = cur.fetchone()[0]
-    if count == 0:
-        # insert each activity into the dtbs
-         cur.executemany("INSERT INTO activities (name, category, link) VALUES (?,?,?)", activity_tuples)
-         conn.commit()
+
+    # insert each activity into the dtbs
+    cur.executemany("INSERT OR IGNORE INTO activities (name, category, link) VALUES (?,?,?)", activity_tuples)
+    conn.commit()
     conn.close()
 
 """ method to return all the activities in the dtbs"""
@@ -116,6 +116,6 @@ def add_comment(activity_name, comment):
 def add_activity(activity_name, category, link=None):
     conn = sqlite3.connect("activities.db")
     cur = conn.cursor()
-    cur.execute("INSERT INTO activities (name, category, link) VALUES (?,?,?)", (activity_name, category, link))
+    cur.execute("INSERT OR IGNORE INTO activities (name, category, link) VALUES (?,?,?)", (activity_name, category, link))
     conn.commit()
     conn.close()

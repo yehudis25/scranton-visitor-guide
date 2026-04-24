@@ -34,16 +34,27 @@ def scrape_activities():
             for attraction in tag.find_all("a"):
                 link = attraction.get("href", "")
                 name = attraction.get("title", "")
+                # make sure getting correct parts 
+                if not link.startswith("/wiki/"):
+                    continue
+                if ":" in link:  # skip Help:, File:, etc.
+                    continue
+                if not name or len(name.split()) < 2:  # skip single words like
+                    continue
+                if current_category is None:
+                    continue
+                item_category = current_category
                 # there were some things under the wrong category - change it here:
                 if ("Park" in name):
-                    current_category = "Park"
+                    item_category = "Park"
                 if ("Museum" in name):
-                    current_category = "Museum"
-                # add to the dictionary: only include activities ( not random <a>'s)
-                if (name != ""):
-                    activities_data.append({
+                    item_category = "Museum"
+
+                # add to the dictionary
+                
+                activities_data.append({
                     "name": name,
-                    "category": current_category,
+                    "category": item_category,
                     "link": "https://en.wikipedia.org" + link
                 })
     return activities_data
