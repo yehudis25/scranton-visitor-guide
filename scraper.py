@@ -21,7 +21,7 @@ def scrape_activities():
         # each paragraph of the html code is a new category
         if tag.name == "p":
             text = tag.get_text()
-            if ("History" in text):
+            if ("heritage" in text):
                 current_category = "History"
             elif ("Museums" in text):
                 current_category = "Museums"
@@ -41,11 +41,14 @@ def scrape_activities():
                     continue
                 if not name or len(name.split()) < 2:  # skip single words like
                     continue
+                
+                if ("Frederick" in name or "National" in name or name == "Terence Powderly" or "Central" in name):
+                    continue
                 if current_category is None:
                     continue
                 item_category = current_category
                 # there were some things under the wrong category - change it here:
-                if ("Park" in name):
+                if ("park" in name):
                     item_category = "Parks"
                 if ("Museum" in name):
                     item_category = "Museums"
@@ -59,7 +62,7 @@ def scrape_activities():
                 })
     return activities_data
 
-""" the code below did not work for scaping when I tried it"""
+# """ the code below did not work for scaping when I tried it, may be worked through and debugged when I have time;)"""
 # def scrape_visit_nepa():
 #     headers = {"User-Agent": "Mozilla/5.0"}
 #     base_url = "https://discovernepa.com/things-to-do/search/"
@@ -83,5 +86,4 @@ def scrape_activities():
 #             "link": link
 #             })
 #     return activities_data
-#https://www.visitnepa.org/plugins/maps/map/things-to-do-in-scranton/6503247a175f177b67c029f9/?embed=true
         
