@@ -1,4 +1,4 @@
-# this module connects the dybs setup with the scraped data
+# this module connects the dtbs setup with the scraped data
 from stored_scraped_data import  insert_all
 from scraper import scrape_activities
 
