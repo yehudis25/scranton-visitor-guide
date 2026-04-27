@@ -21,10 +21,10 @@ def scrape_activities():
         # each paragraph of the html code is a new category
         if tag.name == "p":
             text = tag.get_text()
-            if ("heritage" in text):
+            if ("History" in text):
                 current_category = "History"
             elif ("Museums" in text):
-                current_category = "Museum"
+                current_category = "Museums"
             elif ("recreation" in text):
                 current_category = "Recreation"
             else:
@@ -46,9 +46,9 @@ def scrape_activities():
                 item_category = current_category
                 # there were some things under the wrong category - change it here:
                 if ("Park" in name):
-                    item_category = "Park"
+                    item_category = "Parks"
                 if ("Museum" in name):
-                    item_category = "Museum"
+                    item_category = "Museums"
 
                 # add to the dictionary
                 

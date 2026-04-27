@@ -26,7 +26,7 @@ def create_database():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         activity_id INTEGER,
         comment TEXT,
-        FOREIGN KEY (activity_id) REFERENCES activities(id)   # Connect the 2 tables
+        FOREIGN KEY (activity_id) REFERENCES activities(id)  
         )
     """)
     conn.commit()
@@ -50,7 +50,18 @@ def insert_all(activities):
 def get_all_activities():
     conn = sqlite3.connect("activities.db")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM activities")
+    cur.execute("""
+        SELECT 
+            id,
+            name,
+            category,
+            link,
+            CASE 
+                WHEN rating_count = 0 THEN 0
+                ELSE CAST(rating_sum AS FLOAT) / rating_count
+            END AS rating
+        FROM activities
+        """)
     rows = cur.fetchall()
     conn.close()
     return rows
@@ -60,7 +71,19 @@ def get_all_activities():
 def search_by_category(category):
     conn = sqlite3.connect("activities.db")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM activities WHERE category = ?", (category,))
+    cur.execute("""
+        SELECT 
+            id,
+            name,
+            category,
+            link,
+            CASE 
+                WHEN rating_count = 0 THEN 0
+                ELSE CAST(rating_sum AS FLOAT) / rating_count
+            END AS rating 
+        FROM activities 
+        WHERE category = ?
+        """, (category,))
     queried_activities = cur.fetchall()
     conn.close()
     return queried_activities
