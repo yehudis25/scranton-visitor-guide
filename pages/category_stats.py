@@ -2,7 +2,7 @@
 
 import streamlit as st
 import pandas as pd
-from stored_scraped_data import search_by_category, get_all_activities
+from stored_scraped_data import  get_all_activities
 from display import display, remove_sidebars
 
 remove_sidebars()
