@@ -132,6 +132,6 @@ for _, row in activity_df.iterrows():
         st.write("")
 # buttons on the bottom of the page
 if st.button("Return to Main Menu"):
-    st.switch_page("pages/main_menu.py")
+    st.switch_page("main_menu.py")
 if st.button(" 💬ChatBot "):
     st.switch_page("pages/chatbot.py")

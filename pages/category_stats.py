@@ -9,7 +9,7 @@ remove_sidebars()
 display()
 
 if st.button("Return to Main Menu"):
-    st.switch_page("pages/main_menu.py")
+    st.switch_page("main_menu.py")
 
 st.subheader("📊 Activity Breakdown")
 st.caption("Click filters above to explore how activities are distributed")

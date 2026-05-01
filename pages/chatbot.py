@@ -34,8 +34,8 @@ if "openai_model" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state["messages"] = []
 # add a return to main menu btn
-if st.button("🏠 Return to Main Menu"):
-    st.switch_page("pages/main_menu.py")
+if st.button("Return to Main Menu"):
+    st.switch_page("main_menu.py")
 st.title("🌦️ Smart Activity Planner")
 
 
