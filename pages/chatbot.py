@@ -2,13 +2,14 @@
 
 import streamlit as st
 from openai import AzureOpenAI
-from stored_scraped_data import get_all_activities
+from stored_scraped_data import get_all_activities, get_comments
 from display import display
 
 display()
 # get the activities for the robot to use as data
 def activities():
     data = get_all_activities()
+    
     activities_string = ""
     # make each activity into a string; AI works well with strings
     for row in data:
@@ -16,8 +17,9 @@ def activities():
         category = row[2]
         link = row[3]
         rating= row[4]
+        comments = get_comments(row[0])
         activities_string += (
-        f"- {name} ({category}) | rating: {rating} | link: {link}\n"
+        f"- {name} ({category}) | rating: {rating} | link: {link} | comments: {comments}\n"
         )
     return activities_string
 
