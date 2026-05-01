@@ -35,7 +35,7 @@ if "messages" not in st.session_state:
     st.session_state["messages"] = []
 # add a return to main menu btn
 if st.button("Return to Main Menu"):
-    st.switch_page("main_menu.py")
+    st.switch_page("streamlit_app.py")
 st.title("🌦️ Smart Activity Planner")
 
 

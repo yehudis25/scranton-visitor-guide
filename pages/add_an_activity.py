@@ -13,7 +13,7 @@ st.title("Help out your fellow users and add an activity here!")
 col1, col2 = st.columns([1,2])
 with col1:
     if st.button("👉 Return to Main Menu"):
-        st.switch_page("main_menu.py")
+        st.switch_page("streamlit_app.py")
 with col2:
     if st.button("🔍 Back to Activity Page"):
         st.switch_page("pages/activity_page.py")
