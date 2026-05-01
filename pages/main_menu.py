@@ -23,7 +23,7 @@ this guide is here to save the day.
 st.image("https://upload.wikimedia.org/wikipedia/commons/e/e5/Electric_City_sign_daylight_Scranton_PA.JPG")
 
 st.markdown("""
-👉 Click the button below to find, rate, and comment all activities!
+👉 Click the button below to find, rate, and comment on all our activities!
 """)
 # button to go to activities page
 if st.button("🔍 Find Activities Now"):
@@ -37,7 +37,7 @@ col1, col2 = st.columns([5,1])
 # button to add an activity
 with col1:
     if st.button("🚴 Add An Activity to Our List"):
-        st.switch_page()
+        st.switch_page("pages/add_an_activity.py")
 # button to go to chatbot
 with col2:
     if st.button(" 💬ChatBot "):

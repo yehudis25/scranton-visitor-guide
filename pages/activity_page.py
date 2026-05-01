@@ -3,7 +3,7 @@
 import streamlit as st
 import pandas as pd
 import math
-from stored_scraped_data import search_by_category, get_all_activities, update_rating, add_comment, get_comments
+from stored_scraped_data import search_by_category, get_all_activities, update_rating, add_comment, get_comments, delete_activity
 from display import display, remove_sidebars
 
 remove_sidebars()
@@ -21,6 +21,15 @@ def star(rating):
 # Find an activity through selecting a category
 if "active_rating_id" not in st.session_state:
     st.session_state.active_rating_id = None
+
+
+# when activity is deleted this pops up:
+if st.session_state.get("show_toast"):
+    st.toast("Deleted ✅")
+    st.session_state["show_toast"] = False
+
+
+# 2 columns : one for adding activity btn and 2 for the title
 col3, col4 = st.columns([3,1])
 with col3:
     st.title("Find an Activity!")
@@ -28,43 +37,52 @@ with col4:
     st.write("")
     st.write("")
     if st.button("🚴 Add Activity Here"):
-        st.switch_page("pages/chatbot.py")
+        st.switch_page("pages/add_an_activity.py")
+
 category = st.selectbox(
     "Choose an Activity Category",
     ["See All", "Museums", "History", "Recreation", "Parks"]
 ) 
+
 # this is the dataframe, either get all the activities or search for an activity:
 if category == "See All":
     activity_df = pd.DataFrame(get_all_activities(), columns=["ID", "Name", "Category", "Link", "Rating"])
 else:
     activity_df = pd.DataFrame(search_by_category(category), columns=["ID", "Name", "Category", "Link", "Rating"])
+
 st.write("")
 st.write("")
 st.write("------------------------------------------------------------------------")
 # make rows with each activity
 for _, row in activity_df.iterrows():
     with st.container():
+        col5, col6 = st.columns([3,1])
+        with col5:
+            st.markdown(f"### {row['Name']}")
+        with col6:
+            st.write("")
+            st.markdown(f"{star(row['Rating'])}")
 
-        st.markdown(f"### {row['Name']}")
-        st.markdown(f"{star(row['Rating'])}")
-        st.markdown(f"**Category:** {row['Category']}")
-        st.markdown(f"[visit 🔗]({row['Link']})")
-        # make an expander to see comments on the activity
-        with st.expander("See activity feedback👇"):
+        # make an expander to see more on the activity
+        with st.expander("View More  Info..."):
+            st.markdown(f"**Category:** {row['Category']}")
+            st.markdown(f"[visit 🔗]({row['Link']})")
             comments = get_comments(row["ID"])
             if not comments:
                 st.write("No comments here yet😧")
             else:
                 for c in comments:
                     st.markdown(f"• {c}")
-        # make an expander to add a comment to the actvity
-        with st.expander(" ➕➕➕ Add a comment here:"):
-            comment = st.text_area("Provide feedback:", height = 100, key=f"comment_{row['ID']}")
-            # submit button:
-            submitted = st.button("Submit Feedback", key=f"submit_comment_{row['ID']}")
-            if submitted:
-                add_comment(row['Name'], comment)
-                st.success("Submitted!")
+
+
+            with st.form(key=f"comment_form_{row['ID']}", clear_on_submit=True):
+                comment = st.text_area("Provide feedback:", height=100)
+
+                submitted = st.form_submit_button("Submit Feedback")
+                if submitted:
+                    add_comment(row['Name'], comment)
+                    st.toast("Feedback Added ✅")
+
             # button to add a rating on the activity
             if st.button("⭐Rate this activity now", key = f"actbtn{row['ID']}"):
                 st.session_state["active_rating_id"] = row["ID"]
@@ -73,18 +91,30 @@ for _, row in activity_df.iterrows():
                 rating = st.slider("Rate",1,5,  key=f"btn_{row['ID']}_{_}")
                 if st.button("Submit rating", key=f"slider_{row['ID']}_{_}"):
                     update_rating(row["Name"], rating)
-                    st.success("Rated! ⭐")
+                    st.session_state["show_comment_added"] = True
                     st.session_state["active_rating_id"] = None 
                     st.session_state.messages = []
                     st.rerun()
-        col1, col2 = st.columns([4,1])
-        with col1:
-            st.write("")
-        with col2:
+
             if st.button("🗑️", key = f"deletebtn{row['ID']}"):
-                st.session_state["delete_activity"] = row["ID"]
+                if st.session_state.get("delete_activity") == row["ID"]:
+                    st.session_state["delete_activity"] = None
+                else:
+                    st.session_state["delete_activity"] = row["ID"]
+
             if st.session_state.get("delete_activity")== row["ID"]:
-                st.warning("are you sure you want to delete this activity for all subsequant users?")
+                st.warning("are you sure you want to delete this activity?")
+                col1, col2 = st.columns([1,9])
+                with col1:
+                    if st.button("Yes", key = f"deletebtnyes{row['ID']}"):
+                        delete_activity(row["Name"])
+                        st.session_state["show_toast"] = True
+                        st.session_state["delete_activity"] = None
+                        st.rerun()
+                with col2:
+                    if st.button("No", key = f"deletebtnno{row['ID']}"):
+                        st.session_state["delete_activity"] = None
+                        st.rerun()
 
         st.write("----------------------------------------------------------------------------")
         st.write("")

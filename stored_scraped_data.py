@@ -130,8 +130,14 @@ def add_comment(activity_name, comment):
     result = cur.fetchone()
     if result:
         activity_id = result[0]
-        cur.execute("INSERT INTO comments (activity_id, comment) VALUES (?,?)", (activity_id, comment))
-        conn.commit()
+        # check if comment exists
+        cur.execute(
+            "SELECT 1 FROM comments WHERE activity_id = ? AND comment = ?", (activity_id, comment)
+        )
+        exists = cur.fetchone()
+        if not exists:
+            cur.execute("INSERT INTO comments (activity_id, comment) VALUES (?,?)", (activity_id, comment))
+            conn.commit()
     conn.close()
 
 
