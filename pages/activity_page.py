@@ -71,6 +71,14 @@ for _, row in activity_df.iterrows():
                     st.session_state["active_rating_id"] = None 
                     st.session_state.messages = []
                     st.rerun()
+        col1, col2 = st.columns([4,1])
+        with col1:
+            st.write("")
+        with col2:
+            if st.button("🗑️", key = f"deletebtn{row['ID']}"):
+                st.session_state["delete_activity"] = row["ID"]
+            if st.session_state.get("delete_activity")== row["ID"]:
+                st.warning("are you sure you want to delete this activity for all subsequant users?")
 
         st.write("----------------------------------------------------------------------------")
         st.write("")
