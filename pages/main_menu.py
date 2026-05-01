@@ -28,6 +28,9 @@ st.markdown("""
 # button to go to activities page
 if st.button("🔍 Find Activities Now"):
     st.switch_page("pages/activity_page.py")
+# button for stat page
+if st.button("📊 See Category Stats"):
+    st.switch_page("pages/category_stats.py")
 
 st.markdown("""
 💡 Don't keep your ideas to yourself —

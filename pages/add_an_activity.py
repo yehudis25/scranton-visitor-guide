@@ -19,16 +19,17 @@ with col2:
         st.switch_page("pages/activity_page.py")
 
 st.markdown("""
-            Do you know an activity not on this list.
-            Did your family go to some new place and enjoy it emansly
-            nows your time to share that actvity and help benefit others
-            """)
+Have you discovered an activity that isn’t on our list?  
+Did your family recently visit a new place and have a great experience?
+
+Now’s your chance to share it and help others find amazing activities too!
+""")
 
 # from to add activity
 with st.form("add_actity_form", clear_on_submit=True):
     name = st.text_input("Activity Name:")
     category = st.selectbox(
-        "Category",
+        "Choose a Category",
         ["Museums", "History", "Recreation", "Parks", "Other"]
     )
     link = st.text_input("Website Link")

@@ -28,6 +28,10 @@ if st.session_state.get("show_toast"):
     st.toast("Deleted ✅")
     st.session_state["show_toast"] = False
 
+# when you rate an activity this pops up
+if st.session_state.get("show_rated_added"):
+    st.toast("Thank you for your feedback✅")
+    st.session_state["show_toast"] = False
 
 # 2 columns : one for adding activity btn and 2 for the title
 col3, col4 = st.columns([3,1])
@@ -38,7 +42,10 @@ with col4:
     st.write("")
     if st.button("🚴 Add Activity Here"):
         st.switch_page("pages/add_an_activity.py")
+    if st.button("📊 Category Stats"):
+        st.switch_page("pages/category_stats.py")
 
+# select a category
 category = st.selectbox(
     "Choose an Activity Category",
     ["See All", "Museums", "History", "Recreation", "Parks"]
@@ -49,6 +56,9 @@ if category == "See All":
     activity_df = pd.DataFrame(get_all_activities(), columns=["ID", "Name", "Category", "Link", "Rating"])
 else:
     activity_df = pd.DataFrame(search_by_category(category), columns=["ID", "Name", "Category", "Link", "Rating"])
+# sort by rating
+activity_df["Rating"] = pd.to_numeric(activity_df["Rating"], errors="coerce")
+activity_df = activity_df.sort_values(by="Rating", ascending=False)
 
 st.write("")
 st.write("")
@@ -68,6 +78,7 @@ for _, row in activity_df.iterrows():
             st.markdown(f"**Category:** {row['Category']}")
             st.markdown(f"[visit 🔗]({row['Link']})")
             comments = get_comments(row["ID"])
+            st.markdown(f"**Feedback:**")
             if not comments:
                 st.write("No comments here yet😧")
             else:
@@ -79,7 +90,7 @@ for _, row in activity_df.iterrows():
                 comment = st.text_area("Provide feedback:", height=100)
 
                 submitted = st.form_submit_button("Submit Feedback")
-                if submitted:
+                if submitted and comment.strip():
                     add_comment(row['Name'], comment)
                     st.toast("Feedback Added ✅")
 
@@ -91,17 +102,18 @@ for _, row in activity_df.iterrows():
                 rating = st.slider("Rate",1,5,  key=f"btn_{row['ID']}_{_}")
                 if st.button("Submit rating", key=f"slider_{row['ID']}_{_}"):
                     update_rating(row["Name"], rating)
-                    st.session_state["show_comment_added"] = True
+                    st.session_state["show_rated_added"] = True
                     st.session_state["active_rating_id"] = None 
                     st.session_state.messages = []
                     st.rerun()
 
+            # delete an activity
             if st.button("🗑️", key = f"deletebtn{row['ID']}"):
                 if st.session_state.get("delete_activity") == row["ID"]:
                     st.session_state["delete_activity"] = None
                 else:
                     st.session_state["delete_activity"] = row["ID"]
-
+            # show warning if you want to delete it
             if st.session_state.get("delete_activity")== row["ID"]:
                 st.warning("are you sure you want to delete this activity?")
                 col1, col2 = st.columns([1,9])
@@ -119,7 +131,7 @@ for _, row in activity_df.iterrows():
         st.write("----------------------------------------------------------------------------")
         st.write("")
 # buttons on the bottom of the page
-if st.button("🏠 Return to Main Menu"):
+if st.button("Return to Main Menu"):
     st.switch_page("pages/main_menu.py")
 if st.button(" 💬ChatBot "):
     st.switch_page("pages/chatbot.py")
