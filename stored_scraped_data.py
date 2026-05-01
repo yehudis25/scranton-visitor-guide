@@ -134,6 +134,19 @@ def add_comment(activity_name, comment):
         conn.commit()
     conn.close()
 
+
+def get_comments(id):
+    conn = sqlite3.connect("activities.db")
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT comment
+        FROM comments
+        WHERE activity_id = ?
+        """, (id,))
+    rows = cur.fetchall()
+    conn.close()
+    return rows
+
 """ method to add an activity to the dtbs"""
 
 def add_activity(activity_name, category, link=None):

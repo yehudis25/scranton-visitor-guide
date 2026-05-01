@@ -10,3 +10,5 @@ def init_db():
 conn = init_db()
 
 st.switch_page("pages/chatbot.py")
+import streamlit as st
+
