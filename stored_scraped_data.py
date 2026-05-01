@@ -14,8 +14,8 @@ def create_database():
             name TEXT,
             category TEXT,
             link TEXT UNIQUE,
-            rating_sum INTEGER,
-            rating_count INTEGER
+            rating_sum INTEGER DEFAULT 0,
+            rating_count INTEGER DEFAULT 0
         )
     """)
     conn.commit()
@@ -26,7 +26,7 @@ def create_database():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         activity_id INTEGER,
         comment TEXT,
-        FOREIGN KEY (activity_id) REFERENCES activities(id)  
+        FOREIGN KEY (activity_id) REFERENCES activities(id) ON DELETE CASCADE  
         )
     """)
     conn.commit()
