@@ -21,8 +21,14 @@ def star(rating):
 # Find an activity through selecting a category
 if "active_rating_id" not in st.session_state:
     st.session_state.active_rating_id = None
-
-st.title("Find an Activity!")
+col3, col4 = st.columns([3,1])
+with col3:
+    st.title("Find an Activity!")
+with col4:
+    st.write("")
+    st.write("")
+    if st.button("🚴 Add Activity Here"):
+        st.switch_page("pages/chatbot.py")
 category = st.selectbox(
     "Choose an Activity Category",
     ["See All", "Museums", "History", "Recreation", "Parks"]
@@ -32,9 +38,9 @@ if category == "See All":
     activity_df = pd.DataFrame(get_all_activities(), columns=["ID", "Name", "Category", "Link", "Rating"])
 else:
     activity_df = pd.DataFrame(search_by_category(category), columns=["ID", "Name", "Category", "Link", "Rating"])
-
 st.write("")
 st.write("")
+st.write("------------------------------------------------------------------------")
 # make rows with each activity
 for _, row in activity_df.iterrows():
     with st.container():
