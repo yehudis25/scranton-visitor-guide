@@ -110,11 +110,9 @@ streamlit run app.py
 
 ## 🧪 Running Tests
 
-To run the full test suite:
 
 ```bash
-pytest
-pytest --cov
+python -m pytest
 
 ```
 
