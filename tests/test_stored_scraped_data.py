@@ -2,8 +2,19 @@
 
 import sqlite3
 import pytest
-from stored_scraped_data import create_database, insert_all, get_all_activities, search_by_category, update_rating, delete_activity, add_comment, get_comments, add_activity
+from stored_scraped_data import (
+    create_database,
+    insert_all,
+    get_all_activities,
+    search_by_category,
+    update_rating,
+    delete_activity,
+    add_comment,
+    get_comments,
+    add_activity,
+)
 import os
+
 
 # the test DTBS
 TEST_DB = "test_activities.db"
@@ -21,6 +32,7 @@ test_activities = [
     }
 ]
 
+
 # make new DTBS
 @pytest.fixture
 def db():
@@ -35,7 +47,10 @@ def db():
     if os.path.exists(TEST_DB):
         os.remove(TEST_DB)
 
+
 """ test create dtbs make sure it creates with proper tables"""
+
+
 def test_create_database(db):
     conn = sqlite3.connect(db)
     cur = conn.cursor()
@@ -48,14 +63,20 @@ def test_create_database(db):
     assert "activities" in tables
     assert "comments" in tables
 
+
 """test to make sure MT DTBS returns []"""
+
+
 def test_empty_dtbs(db):
     rows = get_all_activities(db)
-    assert rows ==[]
+    assert rows == []
     results = search_by_category("Museums", db)
     assert results == []
 
+
 """test the insert all to make sure the data gets inserted"""
+
+
 def test_insert_all(db):
     insert_all(test_activities, db)
     conn = sqlite3.connect(db)
@@ -69,7 +90,10 @@ def test_insert_all(db):
     assert ("Test Place", "Museums", "https://en.wikipedia.org/wiki/Test") in rows
     assert ("Another Place", "Parks", "https://en.wikipedia.org/wiki/Another") in rows
 
+
 """test to make sure get all activities really returns activities"""
+
+
 def test_get_all_activities(db):
     insert_all(test_activities, db)
     rows = get_all_activities(db)
@@ -87,7 +111,10 @@ def test_get_all_activities(db):
         for row in rows
     )
 
+
 """make sure the search by categorie works"""
+
+
 def test_search_by_category(db):
     insert_all(test_activities, db)
 
@@ -99,7 +126,10 @@ def test_search_by_category(db):
         for row in results
     )
 
+
 """make sure the update rating works"""
+
+
 def test_update_rating(db):
     insert_all(test_activities, db)
     name = "Test Place"
@@ -113,7 +143,10 @@ def test_update_rating(db):
     assert rating_sum == 6
     assert rating_count == 2
 
+
 """make sure the delete activities works"""
+
+
 def test_delete_activities(db):
     name = "Test Place"
     delete_activity(name, db)
@@ -125,7 +158,10 @@ def test_delete_activities(db):
 
     assert result is None
 
+
 """test for adding and then getting the comment if it works"""
+
+
 def test_add_get_comment(db):
     insert_all(test_activities, db)
     name = "Test Place"
@@ -140,7 +176,10 @@ def test_add_get_comment(db):
     for c in comments:
         assert c[-1] == comment
 
+
 """test to add an activity"""
+
+
 def test_add_activity(db):
     add_activity("Fake", "History", db=db)
     conn = sqlite3.connect(db)
@@ -152,11 +191,14 @@ def test_add_activity(db):
     conn.close()
     assert ("Fake", "History") in rows
 
+
 """update when thier is no activity"""
+
+
 def test_update_no_activity(db):
     update_rating("hi", 5, db)
     conn = sqlite3.connect(db)
     cur = conn.cursor()
-    cur.execute("SELECT * FROM activities WHERE name = ?",("hi",))
+    cur.execute("SELECT * FROM activities WHERE name = ?", ("hi",))
     result = cur.fetchone()
     assert result is None

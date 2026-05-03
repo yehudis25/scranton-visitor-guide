@@ -19,7 +19,11 @@ FAKE_HTML = """
   </body>
 </html>
 """
+
+
 """make sure the scraper returns something and is a list"""
+
+
 @patch("scraper.requests.get")
 def test_scrape(mock_get):
     mock_response = Mock()
@@ -31,7 +35,10 @@ def test_scrape(mock_get):
     assert isinstance(result, list)
     assert len(result) > 0
 
+
 """make sure the scraping is returning proper results"""
+
+
 @patch("scraper.requests.get")
 def test_filtering(mock_get):
     mock_response = Mock()
@@ -63,7 +70,11 @@ MISSING_HTML = """
   </body>
 </html>
 """
+
+
 """assert that if the website wld close the code would return []"""
+
+
 @patch("scraper.requests.get")
 def test_scrape_missing(mock_get):
     mock_response = Mock()

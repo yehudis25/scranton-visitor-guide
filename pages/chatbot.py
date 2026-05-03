@@ -7,21 +7,24 @@ from display import display
 
 display()
 # get the activities for the robot to use as data
+
+
 def activities():
     data = get_all_activities()
-    
+
     activities_string = ""
     # make each activity into a string; AI works well with strings
     for row in data:
         name = row[1]
         category = row[2]
         link = row[3]
-        rating= row[4]
+        rating = row[4]
         comments = get_comments(row[0])
         activities_string += (
-        f"- {name} ({category}) | rating: {rating} | link: {link} | comments: {comments}\n"
+            f"- {name} ({category}) | rating: {rating} | link: {link} | comments: {comments}\n"
         )
     return activities_string
+
 
 # connect to OpenAI
 client = AzureOpenAI(
@@ -48,17 +51,20 @@ for message in st.session_state.messages:
 # first robot greeting
 if not st.session_state.messages:
     greeting = "Planning Guide - input questions"
-    st.session_state.messages.append({"role": "assistant", "content":
-                                    greeting})
+    st.session_state.messages.append(
+        {
+            "role": "assistant",
+            "content": greeting,
+        }
+    )
     with st.chat_message("assistant"):
         st.markdown(f"**Robot:** {greeting}")
 
 # check for prompt
-if prompt:= st.chat_input("Whats a good activity for a rainy day?🌧️"):
+if (prompt := st.chat_input("Whats a good activity for a rainy day?🌧️")):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(f"**👨‍👩‍👧‍👦 user:** {prompt}")
-        
         # tell AI its job
         system_message = {
             "role": "system",
@@ -77,7 +83,6 @@ if prompt:= st.chat_input("Whats a good activity for a rainy day?🌧️"):
         }
 
         messages = [system_message] + st.session_state.messages[-6:]
-        
         # tell AI to respond
         response = client.chat.completions.create(
             model=st.session_state["openai_model"],
