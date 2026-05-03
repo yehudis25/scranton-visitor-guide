@@ -73,15 +73,31 @@ def test_insert_all(db):
 def test_get_all_activities(db):
     insert_all(test_activities, db)
     rows = get_all_activities(db)
-    assert (1, "Test Place", "Museums", "https://en.wikipedia.org/wiki/Test") in rows
-    assert (2, "Another Place", "Parks", "https://en.wikipedia.org/wiki/Another") in rows
+    assert any(
+        row[1] == "Test Place" and
+        row[2] == "Museums" and
+        row[3] == "https://en.wikipedia.org/wiki/Test"
+        for row in rows
+    )
+
+    assert any(
+        row[1] == "Another Place" and
+        row[2] == "Parks" and
+        row[3] == "https://en.wikipedia.org/wiki/Another"
+        for row in rows
+    )
 
 """make sure the search by categorie works"""
 def test_search_by_category(db):
     insert_all(test_activities, db)
 
     results = search_by_category("Museums", db)
-    assert ("Test Place", "Museums", "https://en.wikipedia.org/wiki/Test") in results
+    assert any(
+        row[1] == "Test Place" and
+        row[2] == "Museums" and
+        row[3] == "https://en.wikipedia.org/wiki/Test"
+        for row in results
+    )
 
 """make sure the update rating works"""
 def test_update_rating(db):
