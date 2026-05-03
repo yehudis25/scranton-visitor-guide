@@ -13,6 +13,8 @@ def scrape_activities():
     activities_data = []
     # html under landmarks and attractions
     heading = soup.find(id = "Landmarks_and_attractions")
+    if heading is None:
+        return []
     # go through the heading
     for tag in heading.find_all_next():
         # once it reaches the next h3 heading: stop

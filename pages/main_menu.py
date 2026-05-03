@@ -1,14 +1,6 @@
 """main menu page"""
 import streamlit as st
 from display import display, remove_sidebars
-from connecter import connecter
-
-
-@st.cache_resource
-def init_db():
-    return connecter()
-
-conn = init_db()
 remove_sidebars()
 
 
@@ -52,4 +44,3 @@ with col1:
 with col2:
     if st.button(" 💬ChatBot "):
         st.switch_page("pages/chatbot.py")
-
