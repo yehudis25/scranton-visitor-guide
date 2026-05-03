@@ -31,7 +31,7 @@ if st.session_state.get("show_toast"):
 # when you rate an activity this pops up
 if st.session_state.get("show_rated_added"):
     st.toast("Thank you for your feedback✅")
-    st.session_state["show_toast"] = False
+    st.session_state["show_rated_added"] = False
 
 # 2 columns : one for adding activity btn and 2 for the title
 col3, col4 = st.columns([3,1])
