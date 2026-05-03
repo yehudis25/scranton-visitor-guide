@@ -6,8 +6,13 @@
 
 ## 🔗 Live App
 👉 https://scranton-visitor-guide.streamlit.app/
-
 ---
+
+## 🚀 Deployment
+
+The application is deployed using Streamlit Cloud and can be accessed here:
+https://scranton-visitor-guide.streamlit.app/
+
 
 ## 📌 Project Overview
 
@@ -100,26 +105,20 @@ After installing dependencies, run the app with:
 
 ```bash
 streamlit run app.py
-
 ```
 
-## ➕ Add this section: “Running Tests”
 
-```markdown
 ## 🧪 Running Tests
 
 To run the full test suite:
 
 ```bash
 pytest
-
 pytest --cov
 
 ```
 
-## ➕ Add this section: “Project Structure”
 
-```markdown
 ## 📁 Project Structure
 
 scranton-visitor-guide/
@@ -129,7 +128,7 @@ scranton-visitor-guide/
 ├── stored_scraped_data.py     # SQLite database logic
 ├── tests/                     # Pytest test suite
 ├── requirements.txt
-└── README.md
+└── pages/                      # Folder with streamlit pages
 
 ## 🗄️ Database Schema
 
@@ -155,4 +154,3 @@ The scraper collects:
 - Category
 - Wikipedia link
 
-It stores the scraped data into the SQLite database using
