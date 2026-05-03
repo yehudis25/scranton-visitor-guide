@@ -1,5 +1,9 @@
 [flake8]
-ignore = E402,F841,F401,E302,E305
-max-line-length = 160
-exclude = tests/*
-max-complexity = 10
+exclude =
+    .git
+    .venv
+    __pycache__
+    .pytest_cache
+    .streamlit
+
+max-line-length = 100

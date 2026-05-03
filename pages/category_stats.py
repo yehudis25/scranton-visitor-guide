@@ -2,7 +2,7 @@
 
 import streamlit as st
 import pandas as pd
-from stored_scraped_data import  get_all_activities
+from stored_scraped_data import get_all_activities
 from display import display, remove_sidebars
 
 remove_sidebars()
@@ -15,7 +15,7 @@ st.subheader("📊 Activity Breakdown")
 st.caption("Click filters above to explore how activities are distributed")
 activities = get_all_activities()
 df = pd.DataFrame(activities)
-    
+
 # do the chart based on the activities
 chart_data = df[2].value_counts()
 # show the top category

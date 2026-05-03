@@ -6,13 +6,13 @@ from bs4 import BeautifulSoup
 
 def scrape_activities():
     # get URL to find activities
-    headers = {"User-Agent": "Mozilla/5.0"}   # needed this for wiki to allow me to scrape
-    page = requests.get("https://en.wikipedia.org/wiki/Scranton,_Pennsylvania", headers = headers)
+    headers = {"User-Agent": "Mozilla/5.0"}    # needed this for wiki to allow me to scrape
+    page = requests.get("https://en.wikipedia.org/wiki/Scranton,_Pennsylvania", headers=headers)
     soup = BeautifulSoup(page.content, "html.parser")
     # dictionary with all the activities
     activities_data = []
     # html under landmarks and attractions
-    heading = soup.find(id = "Landmarks_and_attractions")
+    heading = soup.find(id="Landmarks_and_attractions")
     if heading is None:
         return []
     # go through the heading
@@ -36,15 +36,16 @@ def scrape_activities():
             for attraction in tag.find_all("a"):
                 link = attraction.get("href", "")
                 name = attraction.get("title", "")
-                # make sure getting correct parts 
+                # make sure getting correct parts
                 if not link.startswith("/wiki/"):
                     continue
                 if ":" in link:  # skip Help:, File:, etc.
                     continue
                 if not name or len(name.split()) < 2:  # skip single words like
                     continue
-                
-                if ("Frederick" in name or "National" in name or name == "Terence Powderly" or "Central" in name):
+                if ("Frederick" in name or "National" in name or name == "Terence Powderly"):
+                    continue
+                if ("Central" in name):
                     continue
                 if current_category is None:
                     continue
@@ -56,7 +57,6 @@ def scrape_activities():
                     item_category = "Museums"
 
                 # add to the dictionary
-                
                 activities_data.append({
                     "name": name,
                     "category": item_category,
@@ -64,28 +64,39 @@ def scrape_activities():
                 })
     return activities_data
 
-# """ the code below did not work for scaping when I tried it, may be worked through and debugged when I have time;)"""
-# def scrape_visit_nepa():
-#     headers = {"User-Agent": "Mozilla/5.0"}
-#     base_url = "https://discovernepa.com/things-to-do/search/"
-#     page_num = 1
-#     page = requests.get(f"{base_url}?categories%5B%5D=52&categories%5B%5D=53&categories%5B%5D=61&categories%5B%5D=74&categories%5B%5D=93&categories%5B%5D=56&categories%5B%5D=97&categories%5B%5D=70&categories%5B%5D=72&categories%5B%5D=102&categories%5B%5D=99&categories%5B%5D=71&page_num={page_num}&location%5B%5D=269385&locationType%5B%5D=city", headers=headers)
-#     soup = BeautifulSoup(page.content, "html.parser")
-#     # dictionary with all the activities
-#     activities_data = []
-#     # html under landmarks and attractions
-#     items = soup.find_all("a", class_="vue-listing-card")
-#     # go through the heading
-#     for item in items:
-#         link = item.get("href", "")
-#         name = item.find("h3").text
-#         category = item.find("div", class_="eyebrow").text
-#         # add to the dictionary: only include activities ( not random <a>'s)
 
-#         activities_data.append({
-#             "name": name,
-#             "category":category,
-#             "link": link
-#             })
-#     return activities_data
-        
+"""
+#the code below did not work for scaping when I tried it,
+# may be worked through and debugged when I have time;)
+def scrape_visit_nepa():
+    headers = {"User-Agent": "Mozilla/5.0"}
+    base_url = "https://discovernepa.com/things-to-do/search/"
+    page_num = 1
+url = (
+    f"{base_url}"
+    "?categories%5B%5D=52&categories%5B%5D=53&categories%5B%5D=61"
+    "&categories%5B%5D=74&categories%5B%5D=93&categories%5B%5D=56"
+    "&categories%5B%5D=97&categories%5B%5D=70&categories%5B%5D=72"
+    "&categories%5B%5D=102&categories%5B%5D=99&categories%5B%5D=71"
+    f"&page_num={page_num}"
+    "&location%5B%5D=269385&locationType%5B%5D=city"
+)
+    soup = BeautifulSoup(page.content, "html.parser")
+    # dictionary with all the activities
+    activities_data = []
+    # html under landmarks and attractions
+    items = soup.find_all("a", class_="vue-listing-card")
+    # go through the heading
+    for item in items:
+        link = item.get("href", "")
+        name = item.find("h3").text
+        category = item.find("div", class_="eyebrow").text
+        # add to the dictionary: only include activities ( not random <a>'s)
+
+        activities_data.append({
+            "name": name,
+            "category":category,
+            "link": link
+            })
+    return activities_data
+"""

@@ -1,6 +1,8 @@
 # program to change the color of the app and remove the sidebars
 
 import streamlit as st
+
+
 def display():
     st.markdown(
         """
@@ -12,6 +14,7 @@ def display():
         """,
         unsafe_allow_html=True
     )
+
 
 def remove_sidebars():
     st.markdown(
