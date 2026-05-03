@@ -73,8 +73,82 @@ This project uses **Azure OpenAI (GPT model)** to power an intelligent recommend
 
 ## 📦 Installation & Setup
 
-### Clone repository
+### 📥 Clone repository
 ```bash
 git clone https://github.com/YOUR_USERNAME/scranton-visitor-guide.git
 cd scranton-visitor-guide
+
+## 🧪 Create virtual environment
 python -m venv venv
+
+## ▶️ Activate virtual environment
+venv\Scripts\activate
+
+# Mac/Linux:
+source venv/bin/activate
+
+## 📦 Install dependencies
+pip install -r requirements.txt
+
+## ▶️ Running the Streamlit App Locally
+
+After installing dependencies, run the app with:
+
+```bash
+streamlit run app.py
+
+---
+
+## ➕ Add this section: “Running Tests”
+
+```markdown
+## 🧪 Running Tests
+
+To run the full test suite:
+
+```bash
+pytest
+
+pytest --cov
+
+---
+
+## ➕ Add this section: “Project Structure”
+
+```markdown
+## 📁 Project Structure
+
+scranton-visitor-guide/
+│
+├── app.py                     # Streamlit UI
+├── scraper.py                 # Web scraper
+├── stored_scraped_data.py     # SQLite database logic
+├── tests/                     # Pytest test suite
+├── requirements.txt
+└── README.md
+
+## 🗄️ Database Schema
+
+The SQLite database contains two tables:
+
+### `activities`
+- id (INTEGER, PK)
+- name (TEXT)
+- category (TEXT)
+- link (TEXT)
+- rating_sum (INTEGER)
+- rating_count (INTEGER)
+
+### `comments`
+- id (INTEGER, PK)
+- activity_id (INTEGER, FK → activities.id)
+- comment (TEXT)
+
+## 🕸️ Web Scraper Overview
+
+The scraper collects:
+- Activity name
+- Category
+- Wikipedia link
+
+It stores the scraped data into the SQLite database using
