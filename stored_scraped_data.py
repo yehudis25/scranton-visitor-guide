@@ -64,7 +64,7 @@ def get_all_activities(db = "activities.db"):
         """)
     rows = cur.fetchall()
     conn.close()
-    [dict(row) for row in rows]
+    return rows
 
 """ method to search activities by there categories"""
 
@@ -84,9 +84,9 @@ def search_by_category(category, db = "activities.db"):
         FROM activities 
         WHERE category = ?
         """, (category,))
-    rows = cur.fetchall()
+    queried_activities = cur.fetchall()
     conn.close()
-    return [dict(row) for row in rows]
+    return queried_activities
 
 """ method to update the ratings on the activity"""
 
