@@ -73,8 +73,8 @@ def test_insert_all(db):
 def test_get_all_activities(db):
     insert_all(test_activities, db)
     rows = get_all_activities(db)
-    assert ("Test Place", "Museums", "https://en.wikipedia.org/wiki/Test") in rows
-    assert ("Another Place", "Parks", "https://en.wikipedia.org/wiki/Another") in rows
+    assert (1, "Test Place", "Museums", "https://en.wikipedia.org/wiki/Test") in rows
+    assert (2, "Another Place", "Parks", "https://en.wikipedia.org/wiki/Another") in rows
 
 """make sure the search by categorie works"""
 def test_search_by_category(db):
@@ -85,6 +85,7 @@ def test_search_by_category(db):
 
 """make sure the update rating works"""
 def test_update_rating(db):
+    insert_all(test_activities, db)
     name = "Test Place"
     update_rating(name, 4, db)
     update_rating(name, 2, db)
@@ -110,6 +111,7 @@ def test_delete_activities(db):
 
 """test for adding and then getting the comment if it works"""
 def test_add_get_comment(db):
+    insert_all(test_activities, db)
     name = "Test Place"
     comment = "hello, world"
 
@@ -120,7 +122,7 @@ def test_add_get_comment(db):
     activity_id = cur.fetchone()[0]
     comments = get_comments(activity_id, db)
     for c in comments:
-        assert c[2] == comment
+        assert c[-1] == comment
 
 """test to add an activity"""
 def test_add_activity(db):
@@ -138,8 +140,7 @@ def test_add_activity(db):
 def test_update_no_activity(db):
     update_rating("hi", 5, db)
     conn = sqlite3.connect(db)
-    cur = conn.curser()
-    cur.execute("SELECT * FROM activities WHERE name = ?"("hi",))
-    result = cur.fetchone
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM activities WHERE name = ?",("hi",))
+    result = cur.fetchone()
     assert result is None
-
