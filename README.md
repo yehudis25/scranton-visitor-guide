@@ -73,7 +73,8 @@ This project uses **Azure OpenAI (GPT model)** to power an intelligent recommend
 
 ## 📦 Installation & Setup
 
-### 1. Clone repository
-```bash id="clone"
-git clone https://github.com/YOUR_USERNAME/scranton-visitor-guide
+### Clone repository
+```bash
+git clone https://github.com/YOUR_USERNAME/scranton-visitor-guide.git
 cd scranton-visitor-guide
+python -m venv venv
