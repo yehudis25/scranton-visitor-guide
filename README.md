@@ -77,19 +77,23 @@ This project uses **Azure OpenAI (GPT model)** to power an intelligent recommend
 ```bash
 git clone https://github.com/YOUR_USERNAME/scranton-visitor-guide.git
 cd scranton-visitor-guide
-
+```
 ## 🧪 Create virtual environment
+```bash
 python -m venv venv
-
+```
 ## ▶️ Activate virtual environment
+```bash
 venv\Scripts\activate
-
+```
 # Mac/Linux:
+```bash
 source venv/bin/activate
-
+```
 ## 📦 Install dependencies
+```Bash
 pip install -r requirements.txt
-
+```
 ## ▶️ Running the Streamlit App Locally
 
 After installing dependencies, run the app with:
@@ -97,7 +101,7 @@ After installing dependencies, run the app with:
 ```bash
 streamlit run app.py
 
----
+```
 
 ## ➕ Add this section: “Running Tests”
 
@@ -111,7 +115,7 @@ pytest
 
 pytest --cov
 
----
+```
 
 ## ➕ Add this section: “Project Structure”
 
