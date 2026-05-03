@@ -4,8 +4,8 @@ import sqlite3
 
 """ create a dtbs for table of activities to do in Scranton """
 
-def create_database():
-    conn = sqlite3.connect("activities.db")  # connecting to database
+def create_database(db = "activities.db"):
+    conn = sqlite3.connect(db)  # connecting to database
     cur = conn.cursor()
     # make the table:
     cur.execute("""
@@ -33,8 +33,8 @@ def create_database():
     conn.close()
 
 """insert all the activities into the dtbs"""
-def insert_all(activities):
-    conn = sqlite3.connect("activities.db")  # connecting to database
+def insert_all(activities, db = "activities.db"):
+    conn = sqlite3.connect(db)  # connecting to database
     cur = conn.cursor()
     activity_tuples = []
     for activity in activities:
@@ -47,8 +47,8 @@ def insert_all(activities):
 
 """ method to return all the activities in the dtbs"""
 
-def get_all_activities():
-    conn = sqlite3.connect("activities.db")
+def get_all_activities(db = "activities.db"):
+    conn = sqlite3.connect(db)
     cur = conn.cursor()
     cur.execute("""
         SELECT 
@@ -68,8 +68,8 @@ def get_all_activities():
 
 """ method to search activities by there categories"""
 
-def search_by_category(category):
-    conn = sqlite3.connect("activities.db")
+def search_by_category(category, db = "activities.db"):
+    conn = sqlite3.connect(db)
     cur = conn.cursor()
     cur.execute("""
         SELECT 
@@ -90,8 +90,8 @@ def search_by_category(category):
 
 """ method to update the ratings on the activity"""
 
-def update_rating(name, rating):
-    conn = sqlite3.connect("activities.db")
+def update_rating(name, rating, db = "activities.db"):
+    conn = sqlite3.connect(db)
     cur = conn.cursor()
     cur.execute("SELECT rating_sum, rating_count FROM activities WHERE name = ?", (name,))
     result = cur.fetchone()
@@ -113,8 +113,8 @@ def update_rating(name, rating):
 
 """ method to delete an activity"""
 
-def delete_activity(name):
-    conn = sqlite3.connect("activities.db")
+def delete_activity(name, db = "activities.db"):
+    conn = sqlite3.connect(db)
     cur = conn.cursor()
     cur.execute("DELETE FROM activities WHERE name = ?", (name, ))
     conn.commit()
@@ -122,8 +122,8 @@ def delete_activity(name):
 
 """ method to add comments on the activity"""
 
-def add_comment(activity_name, comment):
-    conn = sqlite3.connect("activities.db")
+def add_comment(activity_name, comment, db = "activities.db"):
+    conn = sqlite3.connect(db)
     cur = conn.cursor()
     # first commect to activities table to get the activity ID
     cur.execute("SELECT id FROM activities WHERE name = ?", (activity_name,))
@@ -141,8 +141,8 @@ def add_comment(activity_name, comment):
     conn.close()
 
 
-def get_comments(id):
-    conn = sqlite3.connect("activities.db")
+def get_comments(id, db = "activities.db"):
+    conn = sqlite3.connect(db)
     cur = conn.cursor()
     cur.execute("""
         SELECT comment
@@ -155,8 +155,8 @@ def get_comments(id):
 
 """ method to add an activity to the dtbs"""
 
-def add_activity(activity_name, category, link=None):
-    conn = sqlite3.connect("activities.db")
+def add_activity(activity_name, category, link=None,db = "activities.db"):
+    conn = sqlite3.connect(db)
     cur = conn.cursor()
     cur.execute("INSERT OR IGNORE INTO activities (name, category, link) VALUES (?,?,?)", (activity_name, category, link))
     conn.commit()
